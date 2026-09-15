@@ -1,0 +1,39 @@
+module Menkar
+  VERSION: String
+  DEFAULT_SAMPLE: Integer
+  MAX_SAMPLE: Integer
+
+  class Error < StandardError
+  end
+
+  class Indent
+    attr_reader style: :tab | :space
+    attr_reader width: Integer?
+    def self.new: (:tab | :space style, Integer? width) -> Indent
+                | (style: :tab | :space, width: Integer?) -> Indent
+    def with: (?style: :tab | :space, ?width: Integer?) -> Indent
+  end
+
+  class Detection
+    attr_reader encoding: Encoding?
+    attr_reader confidence: Float
+    attr_reader bom: String
+    attr_reader newline: :lf | :crlf | :cr | :mixed | :none | nil
+    attr_reader indent: Indent?
+    attr_reader binary: bool
+    def self.new: (Encoding? encoding, Float confidence, String bom,
+      (:lf | :crlf | :cr | :mixed | :none | nil) newline, Indent? indent, bool binary) -> Detection
+                | (encoding: Encoding?, confidence: Float, bom: String,
+      newline: (:lf | :crlf | :cr | :mixed | :none | nil), indent: Indent?, binary: bool) -> Detection
+    def with: (?encoding: Encoding?, ?confidence: Float, ?bom: String,
+      ?newline: (:lf | :crlf | :cr | :mixed | :none | nil), ?indent: Indent?, ?binary: bool) -> Detection
+  end
+
+  def self.detect: (String bytes, ?hint: untyped, ?sample: Integer) -> Detection
+  def self.detect_file: (String path, ?sample: Integer) -> Detection
+  def self.binary?: (String bytes) -> bool
+  def self.decode: (String bytes, Detection detection) -> String
+  def self.encode: (String string, Detection detection) -> String
+  def self.roundtrip?: (String value, Detection detection) -> bool
+  def self.normalize_newlines: (String string, ?to: :lf | :crlf | :cr) -> [String, Symbol]
+end

@@ -1,0 +1,64 @@
+# frozen_string_literal: true
+
+require "fileutils"
+
+root = File.expand_path("../test/fixtures/corpus", __dir__)
+sources = {
+  "windows_31j" => ["Windows-31J", [
+    "いろはにほへと ちりぬるを わかよたれそ つねならむ",
+    "あさぼらけ ありあけのつきと みるまでに よしののさとに ふれるしらゆき",
+    "はるすぎて なつきにけらし しろたへの ころもほすてふ あまのかぐやま",
+    "たごのうらに うちいでてみれば しろたへの ふじのたかねに ゆきはふりつつ",
+    "おくやまに もみぢふみわけ なくしかの こゑきくときぞ あきはかなしき"
+  ]],
+  "euc_jp" => ["EUC-JP", [
+    "いろはにほへと ちりぬるを わかよたれそ つねならむ",
+    "あまのはら ふりさけみれば かすがなる みかさのやまに いでしつきかも",
+    "これやこの ゆくもかへるも わかれては しるもしらぬも あふさかのせき",
+    "わたのはら やそしまかけて こぎいでぬと ひとにはつげよ あまのつりぶね",
+    "ちはやぶる かみよもきかず たつたがは からくれなゐに みづくくるとは"
+  ]],
+  "iso_2022_jp" => ["ISO-2022-JP", [
+    "いろはにほへと ちりぬるを わかよたれそ つねならむ",
+    "なにはづに さくやこのはな ふゆごもり いまをはるべと さくやこのはな",
+    "きみがため はるののにいでて わかなつむ わがころもでに ゆきはふりつつ",
+    "つくばねの みねよりおつる みなのがは こひぞつもりて ふちとなりぬる",
+    "みかのはら わきてながるる いづみがは いつみきとてか こひしかるらむ"
+  ]],
+  "gbk" => ["GBK", [
+    "学而时习之，不亦说乎。有朋自远方来，不亦乐乎。",
+    "人不知而不愠，不亦君子乎。温故而知新，可以为师矣。",
+    "道可道，非常道。名可名，非常名。无名天地之始。",
+    "知者不惑，仁者不忧，勇者不惧。三人行，必有我师。",
+    "千里之行，始于足下。天下难事，必作于易。"
+  ]],
+  "big5" => ["Big5", [
+    "學而時習之，不亦說乎。有朋自遠方來，不亦樂乎。",
+    "人不知而不慍，不亦君子乎。溫故而知新，可以為師矣。",
+    "道可道，非常道。名可名，非常名。無名天地之始。",
+    "知者不惑，仁者不憂，勇者不懼。三人行，必有我師。",
+    "千里之行，始於足下。天下難事，必作於易。"
+  ]],
+  "euc_kr" => ["EUC-KR", [
+    "나랏말이 중국과 달라 문자와 서로 통하지 아니하므로 새 글자를 만든다.",
+    "가는 말이 고와야 오는 말이 곱다. 백지장도 맞들면 낫다.",
+    "낮말은 새가 듣고 밤말은 쥐가 듣는다. 시작이 반이다.",
+    "하늘이 무너져도 솟아날 구멍이 있다. 고생 끝에 낙이 온다.",
+    "아는 길도 물어 가라. 천 리 길도 한 걸음부터 시작한다."
+  ]],
+  "windows_1252" => ["Windows-1252", [
+    "To be, or not to be, that is the question: Whether ’tis nobler in the mind.",
+    "The play’s the thing wherein I’ll catch the conscience of the king.",
+    "There are more things in heaven and earth, Horatio, than are dreamt of in your philosophy—indeed.",
+    "Brevity is the soul of wit; though this be madness, yet there is method in’t.",
+    "What a piece of work is man! How noble in reason, how infinite in faculty—how express."
+  ]]
+}.freeze
+
+sources.each do |directory, (encoding, texts)|
+  target = File.join(root, directory)
+  FileUtils.mkdir_p(target)
+  texts.each_with_index do |text, index|
+    File.binwrite(File.join(target, format("%02d.txt", index + 1)), "#{text}\r\n".encode(encoding))
+  end
+end
