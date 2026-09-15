@@ -68,21 +68,22 @@ module Menkar
     private_class_method :confidence
 
     def language_score(text, language)
-      total = language == :western ? text.scan(/\S/).length : text.scan(/[^\x00-\x7F]/).length
+      total = text.count(language == :western ? "^ \t\r\n\f\v" : "^\x00-\x7F")
       return 0.0 if total.zero?
 
-      ratio = ->(pattern) { text.scan(pattern).length.fdiv(total) }
+      ratio = ->(characters) { text.count(characters).fdiv(total) }
       common = text.count(COMMON.fetch(language)).fdiv(total)
 
       case language
       when :japanese
-        0.2 + ratio.call(/[\p{Hiragana}\u30A0-\u30FF]/) * 3.1 + ratio.call(/[\uFF61-\uFF9F]/) * 0.6 + ratio.call(/\p{Han}/) * 0.35 + common * 0.8
+        0.2 + ratio.call("\u3040-\u30FF") * 3.1 + ratio.call("\uFF61-\uFF9F") * 0.6 +
+          ratio.call("\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF\u{20000}-\u{2FA1F}") * 0.35 + common * 0.8
       when :simplified_chinese, :traditional_chinese
-        0.2 + ratio.call(/\p{Han}/) * 1.2 + common * 1.1
+        0.2 + ratio.call("\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF\u{20000}-\u{2FA1F}") * 1.2 + common * 1.1
       when :korean
-        0.2 + ratio.call(/\p{Hangul}/) * 1.5 + common
+        0.2 + ratio.call("\u1100-\u11FF\u3130-\u318F\uA960-\uA97F\uAC00-\uD7AF\uD7B0-\uD7FF") * 1.5 + common
       else
-        0.2 + ratio.call(/\p{Latin}/) * 1.2 + common * 0.6
+        0.2 + ratio.call("A-Za-z\u00C0-\u024F\u1E00-\u1EFF") * 1.2 + common * 0.6
       end
     end
     private_class_method :language_score
