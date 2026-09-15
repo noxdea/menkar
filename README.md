@@ -48,12 +48,14 @@ is false. Decoding and encoding never replace invalid or undefined characters.
 
 ## Corpus and accuracy
 
-The test corpus contains short excerpts from public-domain works: the Iroha
-and Ogura Hyakunin Isshu (Japanese), the *Analects* and *Tao Te Ching*
-(Chinese), *Hunminjeongeum* and traditional Korean proverbs, and Shakespeare's
-*Hamlet*. `script/build_corpus` reproducibly transcodes those excerpts into the
-fixture encodings. The source works are in the public domain; the generated
-fixtures are distributed under the repository's MIT license.
+The test corpus contains short excerpts from public-domain works: the Iroha,
+Ogura Hyakunin Isshu, *I Am a Cat*, *The Pillow Book*, *The Tale of the Heike*,
+*The Narrow Road to the Deep North*, and Basho's haiku (Japanese); the
+*Analects* and *Tao Te Ching* (Chinese); *Hunminjeongeum* and traditional Korean
+proverbs; and Shakespeare's *Hamlet*. `script/build_corpus` reproducibly
+transcodes those excerpts into the fixture encodings. The source works are in
+the public domain; the generated fixtures are distributed under the
+repository's MIT license.
 
 The suite requires at least 98% correct classification for Japanese fixtures
 and 90% for the remaining legacy encodings.

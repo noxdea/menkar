@@ -76,7 +76,7 @@ module Menkar
 
       case language
       when :japanese
-        0.2 + ratio.call(/[\p{Hiragana}\p{Katakana}]/) * 1.8 + ratio.call(/\p{Han}/) * 0.35 + common * 0.8 - ratio.call(/[\uFF61-\uFF9F]/) * 1.2
+        0.2 + ratio.call(/[\p{Hiragana}\u30A0-\u30FF]/) * 3.1 + ratio.call(/[\uFF61-\uFF9F]/) * 0.6 + ratio.call(/\p{Han}/) * 0.35 + common * 0.8
       when :simplified_chinese, :traditional_chinese
         0.2 + ratio.call(/\p{Han}/) * 1.2 + common * 1.1
       when :korean
