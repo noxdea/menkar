@@ -1,8 +1,38 @@
-# Menkar
+<h1 align="center">Menkar</h1>
+
+<p align="center">
+  <strong>Pure Ruby text encoding detection and normalization</strong>
+</p>
+
+<p align="center">
+  <a href="https://rubygems.org/gems/menkar"><img src="https://img.shields.io/gem/v/menkar.svg?colorB=319e8c" alt="Gem Version"></a>
+  <a href="https://rubygems.org/gems/menkar"><img src="https://img.shields.io/gem/dt/menkar.svg" alt="Downloads"></a>
+  <img src="https://img.shields.io/badge/ruby-%3E%3D%203.1-ruby.svg" alt="Ruby Version">
+  <a href="LICENSE.txt"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
+</p>
+
+<p align="center">
+  <a href="#features">Features</a> ·
+  <a href="#installation">Installation</a> ·
+  <a href="#quick-start">Quick Start</a> ·
+  <a href="#detection-and-transcoding">Detection</a> ·
+  <a href="#corpus-and-accuracy">Accuracy</a>
+</p>
+
+---
 
 Menkar is a pure Ruby library for identifying text bytes before they enter a
 UTF-8 editor core. It detects BOMs, binary data, encodings, newline forms, and
 indentation, then performs strict and reversible transcoding.
+
+## Features
+
+- BOM, binary-data, encoding, newline, and indentation detection
+- UTF-8 plus seven Japanese, Chinese, Korean, and Western legacy encodings
+- Strict decode, encode, and round-trip checks without replacement characters
+- BOM preservation and explicit newline normalization
+- Bounded sampling for predictable memory and runtime
+- Corpus-backed classification accuracy checks
 
 ## Installation
 
@@ -10,7 +40,9 @@ indentation, then performs strict and reversible transcoding.
 gem "menkar"
 ```
 
-## Usage
+Menkar supports Ruby 3.1 and later.
+
+## Quick Start
 
 ```ruby
 require "menkar"
@@ -27,6 +59,8 @@ unless Menkar.roundtrip?(updated, detection)
 end
 File.binwrite("legacy.txt", Menkar.encode(updated, detection))
 ```
+
+## Detection and transcoding
 
 `encode` restores the detected BOM and otherwise preserves the string's
 newlines byte for byte. Newline conversion is explicit:
@@ -70,6 +104,10 @@ BUDGET=1 bundle exec rake bench
 gem build --strict menkar.gemspec
 ```
 
+## Contributing
+
+Bug reports and pull requests are welcome at https://github.com/noxdea/menkar.
+
 ## License
 
-Menkar is available under the MIT License.
+Menkar is available under the [MIT License](LICENSE.txt).
