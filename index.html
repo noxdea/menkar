@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#060a13">
+  <meta name="description" content="Menkar detects and normalizes text encodings in pure Ruby.">
+  <title>Menkar — Text encoding detection for Ruby</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body style="--accent:#f2c96d">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="#"><span class="star-mark"></span>Menkar</a>
+    <nav aria-label="Primary navigation"><a href="#features">Capabilities</a><a href="#install">Install</a><a href="https://github.com/noxdea/menkar">GitHub</a></nav>
+  </header>
+  <main id="main">
+    <section class="hero">
+      <div>
+        <p class="constellation">α Ceti · text encoding</p>
+        <h1>Know your bytes.</h1>
+        <p class="lede">Detect BOMs, binary data, legacy encodings, newline forms, and indentation before unknown text enters a UTF-8 application.</p>
+        <div class="actions"><a class="button primary" href="#install">Install Menkar</a><a class="button" href="https://github.com/noxdea/menkar">View source</a></div>
+        <ul class="facts"><li><strong>Strict transcoding</strong></li><li>Ruby ≥ 3.1</li><li>MIT licensed</li></ul>
+      </div>
+      <div class="instrument" aria-label="Encoding detection result example">
+        <div class="instrument-head"><span>legacy.txt / 64 KiB sample</span><span class="signal">text</span></div>
+        <div class="instrument-body">
+          <p class="command"><b>detect</b> evidence ranked without replacement characters</p>
+          <div class="rows" style="padding:1.25rem">
+            <div class="meter"><span>Windows-31J</span><span class="track"><i style="--value:96%"></i></span><strong>0.96</strong></div>
+            <div class="meter"><span>EUC-JP</span><span class="track"><i style="--value:41%"></i></span><strong>0.41</strong></div>
+            <div class="meter"><span>UTF-8</span><span class="track"><i style="--value:12%"></i></span><strong>0.12</strong></div>
+          </div>
+          <div class="rows" style="margin-top:1rem">
+            <div class="row"><span><small>newlines</small><br><strong>CRLF</strong></span><span class="tag">preserved</span></div>
+            <div class="row"><span><small>indentation</small><br><strong>spaces × 2</strong></span><span class="tag">sampled</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="features" id="features">
+      <div class="section-heading"><h2>Decode with evidence.</h2><p>Menkar treats detection as evidence, not save policy. Applications stay in control while strict conversion protects the original document.</p></div>
+      <div class="feature-grid">
+        <article><h3>Broad detection</h3><p>UTF-8 plus seven Japanese, Chinese, Korean, and Western legacy encodings.</p></article>
+        <article><h3>Reversible edits</h3><p>Round-trip checks expose characters that cannot be written back without silent data loss.</p></article>
+        <article><h3>Bounded work</h3><p>Sampling keeps memory and runtime predictable, even when source files are large.</p></article>
+      </div>
+    </section>
+    <section class="install" id="install">
+      <div class="install-copy"><h2>Read unknown text.</h2><p>Detect first, decode strictly, then decide how your application saves.</p></div>
+      <div class="terminal"><div class="terminal-bar">Ruby</div><pre><span class="prompt">$</span> bundle add menkar
+
+bytes = File.binread("legacy.txt")
+detection = Menkar.detect(bytes)
+text = Menkar.decode(bytes, detection)
+
+Menkar.roundtrip?(text, detection)</pre></div>
+    </section>
+  </main>
+  <footer><p>Menkar · Pure Ruby · MIT</p><div><a href="https://rubygems.org/gems/menkar">RubyGems</a><a href="https://github.com/noxdea/menkar">GitHub</a></div></footer>
+</body>
+</html>
